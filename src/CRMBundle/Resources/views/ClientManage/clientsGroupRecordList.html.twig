@@ -1,0 +1,89 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}
+    {% if type=='tp' %}客户投资列表{% elseif type=='rp' %}客户回款列表{% endif %}
+    <span class="pull-right"><a href="{{ path('distribution_group') }}"><button class="btn btn-primary">返回分组情况</button></a> </span>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row" style="background-color: transparent">
+                <table class="table table-striped table-bordered table-hover" id="clients_investment">
+                    <thead>
+                    {% if type=='tp' %}
+                    <tr>
+                        <th>资金流水号</th>
+                        <th>项目ID</th>
+                        <th>客户ID</th>
+                        <th>盈利率</th>
+                        <th>投标金额</th>
+                        <th>是否原始投标</th>
+                        <th>投标时间</th>
+                    </tr>
+                    {% elseif type=='rp' %}
+                    <tr>
+                        <th>回款ID</th>
+                        <th>客户ID</th>
+                        <th>用户名</th>
+                        <th>客户姓名</th>
+                        <th>资金</th>
+                        <th>利息</th>
+                        <th>合计</th>
+                        <th>回款日期</th>
+                        <th>状态</th>
+                    </tr>
+                    {% endif %}
+                    </thead>
+                    <tbody>
+                    {% if type=='tp' %}
+                    {% for item in data %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.pid }}</td>
+                        <td>{{ item.uid }}</td>
+                        <td>{{ (item.rate)/100 }}</td>
+                        <td>{{ item.amount }}元</td>
+                        <td>{% if item.isOriginal=='Yes' %}原始{% else %}预约标{% endif %}</td>
+                        <td>{{ item.time|date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% elseif type=='rp' %}
+                    {% for item in data %}
+                    <tr>
+                        <td>{{ item.paybackID }}</td>
+                        <td>{{ item.uid }}</td>
+                        <td>{{ item.username }}</td>
+                        <td>{{ item.realname }}</td>
+                        <td>{{ item.capital }}</td>
+                        <td>{{ item.interest }}</td>
+                        <td>{{ item.sum }}</td>
+                        <td>{{ item.paybackAt|date("Y-m-d") }}</td>
+                        <td>{% if item.status=='Executed' %}已回款{% elseif item.status=='Pending' %}未到期{% elseif item.status=='Cancel' %}取消{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+                {% if pagination is defined  %}
+                <div class="row">
+                    <div class="col-sm-2">
+                        {% if type=='tp' %}
+                        <a href="{{ path('clients_group_record_list', {'type': 'tp', 'export': 'export','mid':mid}) }}"><button class="btn btn-primary">导出客户投资列表</button></a>
+                        {% elseif type=='rp' %}
+                        <a href="{{ path('clients_group_record_list', {'type': 'rp', 'export': 'export','mid':mid}) }}"><button class="btn btn-primary">导出客户回款列表</button></a>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-10 dataTables_paginate paging_simple_numbers">
+                    {% set first_page=path('clients_group_record_list',{'page':1,'type':type,'mid':mid}) %}
+                    {% set previous=path('clients_group_record_list',{'page':app.request.get('page')-1,'type':type,'mid':mid}) %}
+                    {% set current_page=path('clients_group_record_list',{'type':type,'mid':mid}) %}
+                    {% set page_2=path('clients_group_record_list',{'page':2,'type':type,'mid':mid}) %}
+                    {% set next=path('clients_group_record_list',{'page':app.request.get('page')+1,'type':type,'mid':mid}) %}
+                    {% set last_page=path('clients_group_record_list',{'page':pagination.page_count,'type':type,'mid':mid}) %}
+                    {% include '@CRM/Pagination/page_layout.html.twig' %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

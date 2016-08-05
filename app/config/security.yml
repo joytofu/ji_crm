@@ -1,0 +1,98 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_SALESMAN:                ROLE_USER
+        ROLE_DEPARTMET_MANAGER:       [ROLE_SALESMAN,ROLE_DEPARTMENT_MANAGER]
+        ROLE_SENIOR_EXECUTIVE:        [ROLE_SALESMAN,ROLE_DEPARTMENT_MANAGER]
+        ROLE_ADMIN:                   [ROLE_SENIOR_EXECUTIVE,ROLE_DEPARTMENT_MANAGER,ROLE_SALESMAN]
+        ROLE_SUPER_ADMIN:             [ROLE_ADMIN,ROLE_SENIOR_EXECUTIVE,ROLE_MANAGER,ROLE_SALESMAN]
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+            in_memory:
+                memory:
+                  users:
+                    kcswag:
+                      password: kcswag
+                      roles: ROLE_SUPER_ADMIN
+
+
+            fos_userbundle:
+                id: fos_user.user_provider.username
+
+            db_provider:
+                entity:
+                    class: UserBundle:User
+                    property: username
+
+
+
+
+    firewalls:
+
+        api:
+            pattern: ^/api/
+            provider: db_provider
+            anonymous: true
+            stateless: true
+            lexik_jwt: ~
+            #lexik_jwt:
+                           # authorization_header:
+                            #    enabled: true
+                            #    prefix:  Bearer
+                            #query_parameter:
+                            #    enabled: true
+                            #    name:    Bearer
+                            #throw_exceptions:        true
+                            #create_entry_point:      true
+                            #authentication_provider:  lexik_jwt_authentication.security.authentication.provider
+            guard:
+                  authenticators:
+                       - app.jwt_token_authenticator
+                  entry_point: app.jwt_token_authenticator
+
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+
+            pattern: ^/
+            form_login:
+                        provider: fos_userbundle
+                        csrf_token_generator: security.csrf.token_manager
+                        default_target_path: redirectAfterLogin
+                        login_path: /login
+                        check_path: /login_check
+
+            logout:
+                        path: /logout
+                        target: /login
+            anonymous:    ~
+            remember_me:
+                        secret:   '%secret%'
+                        lifetime: 604800 # 1 week in seconds
+                        path:     /
+                        remember_me_parameter: _remember_me
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+
+    access_control:
+                - { path: ^/api/token-authentication, role: IS_AUTHENTICATED_ANONYMOUSLY }
+                - { path: ^/api/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+                - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+                - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+                - { path: ^/(_wdt|_profiler), role: IS_AUTHENTICATED_ANONYMOUSLY }
+                - { path: ^/(css|js), role: IS_AUTHENTICATED_ANONYMOUSLY }
+                - { path: ^/, role: ROLE_USER }

@@ -1,0 +1,126 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}基础数据{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                        <a data-toggle="tab" href="#investmentData" aria-expanded="true">
+                            <i class="green ace-icon fa fa-home bigger-120"></i>
+                            投资数据汇总
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#amountData" aria-expanded="true">
+                            <i class="green ace-icon fa fa-home bigger-120"></i>
+                            金额数据汇总
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#paybackData" aria-expanded="true">
+                            <i class="green ace-icon fa fa-home bigger-120"></i>
+                            还款数据汇总
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="investmentData" class="tab-pane fade active in">
+                        <table id="investmentDataTable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>金额种类</th>
+                                <th>今天投资额</th>
+                                <th>昨天投资额</th>
+                                <th>7天投资额</th>
+                                <th>当月投资额</th>
+                                <th>上月投资额</th>
+                                <th>近3月投资额</th>
+                                <th>总投资额</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in investmentData %}
+                                <tr>
+                                    <td>{% if item.type=='transactionAmount' %}成交金额{% elseif item.type=='originalAmount' %}原始金额{% elseif item.type=='transferAmount' %}转让金额{% endif %}</td>
+                                    <td>{{ item.intraday }}</td>
+                                    <td>{{ item.yesterday }}</td>
+                                    <td>{{ item.within7Days }}</td>
+                                    <td>{{ item.currentMonth }}</td>
+                                    <td>{{ item.lastMonth }}</td>
+                                    <td>{{ item.threeMonths }}</td>
+                                    <td>{{ item.total }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="amountData" class="tab-pane fade fade">
+                        <table id="amountDataTable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>类目名称</th>
+                                <th>今天</th>
+                                <th>昨天</th>
+                                <th>7天</th>
+                                <th>30天</th>
+                                <th>上月</th>
+                                <th>近3月</th>
+                                <th>总共</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key,item in amountData %}
+                            <tr>
+                                <td>{% if key=='topUpAmount' %}充值金额{% elseif key=='investmentAmount' %}投资金额{% elseif key=='withdrawApplicationAmount' %}申请提现金额{% endif %}</td>
+                                <td>{{ item.intraday }}</td>
+                                <td>{{ item.yesterday }}</td>
+                                <td>{{ item.within7Days }}</td>
+                                <td>{{ item.currentMonth }}</td>
+                                <td>{{ item.lastMonth }}</td>
+                                <td>{{ item.threeMonths }}</td>
+                                <td>{{ item.total }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="paybackData" class="tab-pane fade fade">
+                        <table id="paybackDataTable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>类目名称</th>
+                                <th>今天</th>
+                                <th>昨天</th>
+                                <th>7天</th>
+                                <th>当月</th>
+                                <th>总共</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>还款金额</td>
+                                    <td>{{ paybackData.intraday }}</td>
+                                    <td>{{ paybackData.yesterday }}</td>
+                                    <td>{{ paybackData.within7Days }}</td>
+                                    <td>{{ paybackData.currentMonth }}</td>
+                                    <td>{{ paybackData.total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block private_js %}
+    <script>
+        $('#data').addClass('open');
+        $('#basic_data').addClass('active');
+    </script>
+{% endblock %}

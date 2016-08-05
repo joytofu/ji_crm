@@ -1,0 +1,24 @@
+{% extends ':default:layout.html.twig' %}
+{% block private_css %}
+    <link rel="stylesheet" href="{{ asset('assets/umeditor/themes/default/css/umeditor.min.css') }}">
+{% endblock %}
+{% block page_header %}{% if edit is not defined %}添加活动记录{% else %}编辑活动记录{% endif %}{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+        {{ form_row(form.date) }}
+        {{ form_row(form.detail,{'attr':{'style':'height:200px'}}) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block private_js %}
+    <script src="{{ asset('assets/umeditor/umeditor.config.js') }}"></script>
+    <script src="{{ asset('assets/umeditor/umeditor.min.js') }}"></script>
+    <script src="{{ asset('assets/umeditor/lang/zh-cn/zh-cn.js') }}"></script>
+    <script>
+        $(function(){
+            window.um = UM.getEditor('activity_record_detail');
+        });
+
+        $('#assistance').addClass('open');
+        $('#activity_records').addClass('active');
+    </script>
+{% endblock %}

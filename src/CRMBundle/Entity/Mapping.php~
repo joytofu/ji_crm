@@ -1,0 +1,47 @@
+<?php
+
+namespace CRMBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Mapping
+ *
+ * @ORM\Table(name="mapping", indexes={@ORM\Index(name="LastFollowTime", columns={"LastFollowTime"}), @ORM\Index(name="MID", columns={"MID"})})
+ * @ORM\Entity
+ */
+class Mapping
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="UID", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $uid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="MID", type="integer", nullable=false)
+     */
+    private $mid = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="LastFollowTime", type="integer", nullable=false)
+     */
+    private $lastfollowtime = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="DistributedBy", type="integer", nullable=true)
+     */
+    private $distributedby;
+
+
+}
+

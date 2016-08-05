@@ -1,0 +1,236 @@
+<div id="{{ bid }}" class="tab-pane fade fade">
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="period" style="height: 400px; max-width: 600px; margin: 0 auto"></div>
+        </div>
+        <div class="col-lg-6">
+            <div id="earnings" style="height: 400px; max-width: 600px; margin: 0 auto"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="investmentAmount" style="height: 400px; max-width:600px; margin: 0 auto"></div>
+        </div>
+        <div class="col-lg-6">
+            <div id="projectType" style="height: 400px; max-width: 600px; margin: 0 auto"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="investmentType" style="height: 400px; max-width: 600px; margin: 0 auto"></div>
+        </div>
+    </div>
+</div>
+{% block private_js %}
+    <script src="{{ asset('assets/js/highcharts.js') }}"></script>
+    <script src="{{ asset('assets/js/exporting.js') }}"></script>
+    <script>
+        $(function () {
+
+            // Radialize the colors
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: {
+                        cx: 0.5,
+                        cy: 0.3,
+                        r: 0.7
+                    },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+
+            // 项目期限
+            $('#period').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: '项目期限'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}({point.y})</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: '期限占比',
+                    data: [
+                        {% for key,item in period %}
+                        { name: '{{ key }}天', y: {{ item }} },
+                        {% endfor %}
+                    ]
+                }]
+            });
+
+            //项目收益
+            $('#earnings').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: '项目收益'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}({point.y})</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: '收益占比',
+                    data: [
+                        {% for key,item in earnings %}
+                        { name: '{{ key }}%收益', y: {{ item }} },
+                        {% endfor %}
+                    ]
+                }]
+            });
+
+            //项目投资金额
+            $('#investmentAmount').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: '项目投资金额'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}({point.y})</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: '金额占比',
+                    data: [
+                        {% for key,item in investmentAmount %}
+                        { name: '{{ key }}', y: {{ item }} },
+                        {% endfor %}
+                    ]
+                }]
+            });
+
+            //投资项目类型
+            $('#projectType').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: '投资项目类型'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}({point.y})</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: '项目类型占比',
+                    data: [
+                        {% for key,item in projectType %}
+                        { name: '{{ key }}', y: {{ item }} },
+                        {% endfor %}
+                    ]
+                }]
+            });
+
+            //investmentType
+            $('#investmentType').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: '投资类型'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}({point.y})</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: '投资类型占比',
+                    data: [
+                        {% for key,item in investmentType %}
+                        { name: '{% if key=='original' %}原始投标{% elseif key=='transfer' %}债券转让{% endif %}', y: {{ item }} },
+                        {% endfor %}
+                    ]
+                }]
+            });
+        });
+    </script>
+{% endblock %}

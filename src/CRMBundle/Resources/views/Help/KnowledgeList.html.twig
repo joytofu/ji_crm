@@ -1,0 +1,50 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}知识库列表{% endblock %}
+{% block content %}
+        <div class="col-lg-12">
+            <table class="table table-striped table-bordered table-hover" id="knowledge_list">
+                <thead>
+                <tr>
+                    <th>问题</th>
+                    <th>业务指引</th>
+                    <th>解答话术要点</th>
+                    <th>信息提供者</th>
+                    <th>备注</th>
+                    <th>更新日期</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in knowledges %}
+                <tr>
+                    <td>{{ item.question }}</td>
+                    <td>{{ item.answer }}</td>
+                    <td>{{ item.lines }}</td>
+                    <td>{{ item.editor }}</td>
+                    <td>{{ item.remark }}</td>
+                    <td>{{ item.updatedAt|date('Y-m-d H:i:s') }}</td>
+                    <td>
+                        <a href="{{ path('edit_knowledge', {'id': item.id}) }}"><i class="fa fa-wrench"></i></a>&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:void(0)" id="delete_knowledge" did="{{ item.id }}"><i class="fa fa-trash"></i></a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ path('add_knowledge') }}"><button class="btn btn-round btn-primary">添加知识</button></a>
+        </div>
+{% endblock %}
+{% block private_js %}
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $('#knowledge_list').dataTable();
+        $(document).on('click','#delete_knowledge',function(){
+            var id = $(this).attr('did');
+            if(confirm('确定删除该知识吗?')){
+                window.location.href="{{ app.request.baseUrl }}/knowledge_base/delete/"+id;
+            }
+        });
+        $('#assistance').addClass('open');
+        $('#knowledge_base').addClass('active');
+    </script>
+{% endblock %}

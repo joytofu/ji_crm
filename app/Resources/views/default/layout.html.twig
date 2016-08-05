@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>JILI_CRM</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- basic styles -->
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="{{ asset('assets/css/font-awesome-ie7.min.css') }}" />
+    <![endif]-->
+
+    <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/ace.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/ace-rtl.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/ace-skins.min.css') }}">
+
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="{{ asset('assets/css/ace-ie.min.css') }}" />
+    <![endif]-->
+
+    <!--jQuery-->
+    <script src="{{ asset('assets/js/jquery-3.0.0.min.js') }}"></script>
+    {% block private_css %}{% endblock %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--pagination-->
+    <script src="{{ asset('assets/js/jquery.twbsPagination.min.js') }}"></script>
+
+    <!--[if lt IE 9]>
+    <script src="{{ asset('assets/js/html5shiv.js') }}"></script>
+    <script src="{{ asset('assets/js/respond.min.js') }}"></script>
+    <![endif]-->
+
+    <!--[if lte IE 8]>
+    <script src="{{ asset('assets/js/excanvas.min.js') }}"></script>
+    <![endif]-->
+
+    <!-- inline scripts related to this page -->
+
+    <style type="text/css">.jqstooltip { position: absolute;left: 0px;top: 0px;visibility: hidden;background: rgb(0, 0, 0) transparent;background-color: rgba(0,0,0,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";color: white;font: 10px arial, san serif;text-align: left;white-space: nowrap;padding: 5px;border: 1px solid white;z-index: 10000;}.jqsfield { color: white;font: 10px arial, san serif;text-align: left;}</style></head>
+
+<body class="no-skin">
+<div class="navbar navbar-default" id="navbar">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('navbar', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="{{ path('index') }}" class="navbar-brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                    CRM
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="light-blue">
+                    <a href="#">管理中心</a>
+                </li>
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" src="{{ asset('assets/avatars/avatar2.png') }}">
+                                <span class="user-info">
+                                    <small>欢迎光临,</small>
+                                    {% if not is_granted('ROLE_ADMIN') %}
+                                        {{ app.user.userInfo.name }}
+                                    {% else %}
+                                        系统管理员
+                                    {% endif %}
+                                </span>
+
+                        <i class="icon-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="#" id="reset_password" >
+                                <i class="icon-lock"></i>
+                                修改密码
+                            </a>
+
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="{{ path('fos_user_security_logout') }}">
+                                <i class="icon-off"></i>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div><!-- /.container -->
+</div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div class="sidebar" id="sidebar">
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'fixed')
+                } catch (e) {
+                }
+            </script>
+            <!-- #sidebar-shortcuts -->
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                    <button class="btn btn-success">
+                        <i class="ace-icon fa fa-signal"></i>
+                    </button>
+
+                    <button class="btn btn-info">
+                        <i class="ace-icon fa fa-pencil"></i>
+                    </button>
+
+                    <button class="btn btn-warning">
+                        <i class="ace-icon fa fa-users"></i>
+                    </button>
+
+                    <button class="btn btn-danger">
+                        <i class="ace-icon fa fa-cogs"></i>
+                    </button>
+                </div>
+
+                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                    <span class="btn btn-success"></span>
+
+                    <span class="btn btn-info"></span>
+
+                    <span class="btn btn-warning"></span>
+
+                    <span class="btn btn-danger"></span>
+                </div>
+            </div><!-- /.sidebar-shortcuts -->
+            <ul class="nav nav-list">
+                <li id="index">
+                    <a href="{{ path('index') }}">
+                        <i class="menu-icon fa fa-home"></i>
+                        <span class="menu-text"> CRM首页 </span>
+                    </a>
+                </li>
+                {% if app.user.hasRole('RETRIEVE_USER') or app.user.hasRole('RETRIEVE_DISTRIBUTION') %}
+                    <li id="system_management">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-folder-open"></i>
+                            <span class="menu-text"> 系统管理 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        <ul class="submenu">
+                            {% if app.user.hasRole('RETRIEVE_USER') %}
+                                <li id="staff_info">
+                                    <a href="{{ path('users_list') }}">
+                                        <i class="fa fa-info"></i>
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        员工信息
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if app.user.hasRole('RETRIEVE_DISTRIBUTION') %}
+                                <li id="clients_distribution">
+                                    <a href="#" class="dropdown-toggle">
+                                        <i class="fa fa-database"></i>
+                                        客户分配管理
+                                        <b class="arrow fa fa-angle-down"></b>
+                                    </a>
+                                    <b class="arrow"></b>
+                                    <ul class="submenu nav-hide" id="clients_distribution_submenu" style="display: none;">
+                                        <li id="distributed">
+                                            <a href="{{ path('distributed_users', {'sort': '', 'id': ''}) }}">
+                                                <i class="menu-icon fa fa-plus purple"></i>
+                                                已分配名单
+                                            </a>
+
+                                            <b class="arrow"></b>
+                                        </li>
+
+                                        <li id="undistributed">
+                                            <a href="#">
+                                                <i class="menu-icon fa fa-eye pink"></i>
+                                                未分配名单
+                                            </a>
+
+                                            <b class="arrow"></b>
+                                        </li>
+
+                                        <li id="group">
+                                            <a href="{{ path('distribution_group') }}">
+                                                <i class="menu-icon fa fa-eye pink"></i>
+                                                分组情况
+                                            </a>
+                                            <b class="arrow"></b>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
+                <li id='client_management'>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-users"></i>
+                        <span class="menu-text"> 客户管理 </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li id="my_clients">
+                            <a href="{{ path('my_clients') }}">
+                                <i class="fa fa-user"></i>
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                我的客户
+                            </a>
+                        </li>
+                        {% if app.user.hasRole('RETRIEVE_FUND_FLOW_LIST') %}
+                            <li id="top_up_withdraw">
+                                <a href="{{ path('fund_flow') }}">
+                                    <i class="fa fa-money"></i>
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    充值/提现列表
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if app.user.hasRole('RETRIEVE_PAYBACK_PLAN') %}
+                            <li id="payback_plan">
+                                <a href="{{ path('payback_plan') }}">
+                                    <i class="fa fa-money"></i>
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    回款计划
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li id="data">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-area-chart"></i>
+                        <span class="menu-text"> 基本数据 </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li id="tracking_record_statistics">
+                            <a href="{{ path('tracking_records_statistics') }}">
+                                <i class="fa fa-pie-chart"></i>
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                客户服务统计
+                            </a>
+                        </li>
+                        <li id="basic_data">
+                            <a href="{{ path('basic_data') }}">
+                                <i class="fa fa-line-chart"></i>
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                基础数据
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% if app.user.hasRole('RETRIEVE_STATEMENT') %}
+                    <li id="statement">
+                        <a href="{{ path('statement') }}">
+                            <i class="menu-icon fa fa-bar-chart"></i>
+                            <span class="menu-text"> 统计报表 </span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li id="marketing_management">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-search"></i>
+                        <span class="menu-text"> 营销管理 </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li id="channel_management">
+                            <a href="#">
+                                <i class="fa fa-user"></i>
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                渠道管理
+                            </a>
+                        </li>
+                        <li id="client_classification">
+                            <a href="#">
+                                <i class="fa fa-money"></i>
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                客户分类
+                            </a>
+                        </li>
+                        <li id="sales_data">
+                            <a href="#">
+                                <i class="fa fa-money"></i>
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                项目销售数据
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% if app.user.hasRole('RETRIEVE_KNOWLEDGE') or app.user.hasRole('RETRIEVE_CASE') or app.user.hasRole('RETRIEVE_ACTIVITY') or app.user.hasRole('RETRIEVE_NOTICE') or app.user.hasRole('RETRIEVE_PRODUCT_DESCRIPTION') %}
+                    <li id="assistance">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-money"></i>
+                            <span class="menu-text"> 帮助 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        <ul class="submenu">
+                            <li id="knowledge_base">
+
+                                {% if app.user.hasRole('RETRIEVE_KNOWLEDGE') %}
+                                    <a href="{{ path('knowledge_base_list') }}">
+                                        <i class="fa fa-file"></i>
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        客服知识库
+                                    </a>
+                                {% endif %}
+                            </li>
+                            <li id="case_base">
+                                {% if app.user.hasRole('RETRIEVE_CASE') %}
+                                    <a href="{{ path('case_base_list') }}">
+                                        <i class="fa fa-book"></i>
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        客服案例库
+                                    </a>
+                                {% endif %}
+                            </li>
+                            <li id="activity_records">
+                                {% if app.user.hasRole('RETRIEVE_ACTIVITY') %}
+                                    <a href="{{ path('activity_record_list') }}">
+                                        <i class="fa fa-book"></i>
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        活动记录
+                                    </a>
+                                {% endif %}
+                            </li>
+                            <li id="site_notice">
+                                {% if app.user.hasRole('RETRIEVE_NOTICE') %}
+                                    <a href="{{ path('notice_list') }}">
+                                        <i class="fa fa-book"></i>
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        网站公告记录
+                                    </a>
+                                {% endif %}
+                            </li>
+                            <li id="product_description">
+                                {% if app.user.hasRole('RETRIEVE_PRODUCT_DESCRIPTION') %}
+                                    <a href="#">
+                                        <i class="fa fa-book"></i>
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        产品说明
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+            <script>
+                jQuery(function($) {
+                    $(".menu-icon .fa .fa-home").parents('li').addClass('active');
+                });
+            </script>
+
+            <!-- /.nav-list -->
+
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+            </div>
+
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'collapsed')
+                } catch (e) {
+                }
+            </script>
+        </div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
+                </script>
+
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="icon-home home-icon"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">控制台</li>
+                </ul><!-- .breadcrumb -->
+                <div class="nav-search" id="nav-search">
+								<span class="input-icon">
+									<input type="search" placeholder="Search ..." class="nav-search-input" id="clients_search" autocomplete="on">
+									<i class="ace-icon fa fa-search nav-search-icon"></i>
+								</span>
+                </div>
+            </div><!-- /.main-content -->
+            <div class="page-content">
+                <div class="page-header"><h1>{% block page_header %}{% endblock %}</h1></div>
+
+                    <div id="dialog-reset-password" class="hide">
+                        <form name="change_password" method="post" action="{{ path('change_password') }}" class="fos_user_change_password" id="change_password_form">
+                            <div id="change_password">
+                                <div class="form-group">
+                                    <label class="control-label required" for="change_password_current_password">请输入当前密码</label>
+                                    <input type="password" id="change_password_current_password" name="change_password[current_password]" required="required" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label required" for="change_password_plainPassword_first">请输入新密码</label>
+                                    <input type="password" id="change_password_plainPassword_first" name="change_password[plainPassword][first]" required="required" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label required" for="change_password_plainPassword_second">确认密码</label>
+                                    <input type="password" id="change_password_plainPassword_second" name="change_password[plainPassword][second]" required="required" class="form-control">
+                                </div>
+                            </div>
+
+                        <div class="hr hr-12 hr-double"></div>
+
+                        </form>
+                    </div><!-- #dialog-message -->
+
+
+                {% block content %}{% endblock %}
+            </div><!-- /.page-content -->
+
+
+        </div><!-- /.main-container-inner -->
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="icon-double-angle-up icon-only bigger-110"></i>
+        </a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if ("ontouchend" in document)
+        document.write("<script src='{{ asset('assets/js/jquery.mobile.custom.min.js') }}'>" + "<" + "script>");
+</script>
+<script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/typeahead.jquery.min.js') }}"></script>
+
+{% block private_js %}{% endblock %}
+<script>
+    function search(){
+        var term = $('#clients_search').val();
+        var data = {'term':term};
+        var table = "<table id='search_table' class='table table-striped table-bordered table-hover'>" +
+                "<thead>"+
+                "<tr>"+
+                "<th>UID</th>"+
+                "<th>用户名</th>"+
+                "<th>认证状态</th>"+
+                "<th>真实姓名</th>"+
+                "<th>客户类型</th>"+
+                "<th>联系电话</th>"+
+                "<th>备注</th>"+
+                "<th>客服人员</th>"+
+                "<th>详细信息</th>"+
+                "</tr>"+
+                "</thead>"+
+                "<tbody id='search_tbody'>"+
+
+                "</tbody>"+
+                "</table>";
+        $.ajax({
+            url:'/search',
+            type:"POST",
+            data:data,
+            success:function(res){
+                $('.page-content').empty();
+                $('.page-content').append("<div class='page-header'><h1>客户检索</h1></div>");
+                $('.page-content').append(table);
+                $('#search_tbody').append(res);
+            }
+        });
+    }
+
+    $(document).keypress(function (event) {
+        if(event.which==13 && $.trim($('#clients_search').val())!=''){
+            search();
+        }
+    });
+
+    $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+        _title: function(title) {
+            var $title = this.options.title || '&nbsp;'
+            if( ("title_html" in this.options) && this.options.title_html == true )
+                title.html($title);
+            else title.text($title);
+        }
+    }));
+
+    $( "#reset_password" ).on('click', function(e) {
+        e.preventDefault();
+
+        var dialog = $( "#dialog-reset-password" ).removeClass('hide').dialog({
+            modal: true,
+            title: "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='ace-icon fa fa-check'></i>修改密码</h4></div>",
+            title_html: true,
+            buttons: [
+                {
+                    text: "Cancel",
+                    "class" : "btn btn-minier",
+                    click: function() {
+                        $( this ).dialog( "close" );
+                    }
+                },
+                {
+                    text: "确定修改",
+                    "class" : "btn btn-primary btn-minier",
+                    click: function() {
+                        $('#change_password_form').submit();
+                    }
+                }
+            ]
+        });
+
+        /**
+         dialog.data( "uiDialog" )._title = function(title) {
+						title.html( this.options.title );
+					};
+         **/
+    });
+</script>
+<script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>
+<script src="{{ asset('assets/js/ace.min.js') }}"></script>
+</body>
+</html>

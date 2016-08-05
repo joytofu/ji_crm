@@ -1,0 +1,58 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}分组情况{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="clearfix">
+                <div class="pull-right tableTools-container"></div>
+            </div>
+            <div class="table-header">客服人员分组情况</div>
+            <div>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>MID</th>
+                        <th>客服姓名</th>
+                        <th>客户数量</th>
+                        <th>客户可用金额合计</th>
+                        <th>客户资产合计</th>
+                        {% if not app.user.hasRole('ROLE_SALESMAN') %}
+                        <th>客户列表</th>
+                        <th>客户投资列表</th>
+                        <th>客户回款列表</th>
+                        <th>服务组回访列表</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in group %}
+                    <tr>
+                        <td>{{ item.mid }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.clientsCount }}</td>
+                        <td>{{ item.availableBalance }}</td>
+                        <td>{{ item.totalAsset }}</td>
+                        {% if not app.user.hasRole('ROLE_SALESMAN') %}
+                        <td><a href="{{ path('clients_of_manager', {'mid': item.mid}) }}"><button class="btn btn-primary">查看</button></a></td>
+                        <td><a href="{{ path('clients_group_record_list',{'type':'tp','mid':item.mid}) }}"><button class="btn btn-primary">查看</button></a></td>
+                        <td><a href="{{ path('clients_group_record_list',{'type':'rp','mid':item.mid}) }}"><button class="btn btn-primary">查看</button></a></td>
+                        <td><a href=""><button class="btn btn-primary">查看</button></a></td>
+                        {% endif %}
+                    </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block private_js %}
+    <script>
+        //side nav
+        $("#system_management").addClass('active open');
+        $("#clients_distribution").addClass('active open');
+        $("#clients_distribution_submenu").css('display','block');
+        $("#group").addClass('active');
+    </script>
+{% endblock %}

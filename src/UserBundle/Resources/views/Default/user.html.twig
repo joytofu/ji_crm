@@ -1,0 +1,137 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}
+    <h1>{% if edit is not defined %}添加用户{% else %}编辑用户信息{% endif %}</h1>
+{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+    <div class="col-xs-12">
+    <div class="col-xs-6 col-sm3">
+        {% if edit is not defined %}
+        <select name="role">
+            <option value='none' disabled selected style='display:none;'>请选择角色</option>
+            <option value="admin">系统管理员</option>
+            <option value="senior_executive">高管</option>
+            <option value="department_manager">部门经理</option>
+            <option value="salesman">业务员</option>
+        </select>
+        {% endif %}
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-xs-6">
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat">
+                <h4 class="widget-title smaller">注册账号信息</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    {{ form_row(form.username) }}
+                    {{ form_row(form.email) }}
+                    {% if edit is not defined %}
+                    {{ form_row(form.plainPassword) }}
+                    {% endif %}
+                    {{ form_row(form.userInfo.name) }}
+                    {{ form_row(form.userInfo.cellPhone) }}
+                    {{ form_row(form.userInfo.department) }}
+                    {{ form_row(form.userInfo.position) }}
+                    {{ form_row(form.userInfo.hireDate) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat">
+                <h4 class="widget-title smaller">权限选择</h4>
+            </div>
+            <div class="widget-body">
+
+                    <table id="access_table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select_all">全选</th>
+                            <th>权限类别</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i=1 %}
+                        {% for key1,item in originalAccess %}
+                            <tr>
+                                <td style="width: 6%"><input type="checkbox" id="department{{ i }}">{{ key1 }}</td>
+                                <td>
+                                    {% for key2,access in item %}
+                                        <input type="checkbox" value="{{ access }}" name="access[]"
+                                                {% if edit is defined %}
+                                            {% if access in roles %}checked{% endif %}
+                                                {% endif %} parent_id="department{{ i }}">
+                                        <span style="margin-right: 7px">{{ key2 }}</span>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% set i=i+1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        {{ form_row(form.submit) }}
+    </div>
+    </div>
+    </form>
+{% endblock %}
+{% block private_js %}
+    <script>
+        for(var i=1;i<={{ count_access }};i++){
+            $(document).on('click','#department'+i,function(){
+                var $parent_id = $(this).attr('id');
+                var access = $("input[parent_id="+$parent_id+"]");
+                if($(this).is(":checked")){
+                    access.prop('checked',true);
+                }else{
+                    access.prop('checked',false);
+                }
+            });
+        }
+
+        for(var i=1;i<={{ count_access }};i++){
+            if($("input[parent_id=department"+i+"]").is(":checked")){
+                $("#department"+i).prop('checked',true)
+            }else{
+                $("#department"+i).prop('checked',false)
+            }
+        }
+
+
+            $(document).on('click',"input[name='access[]']",function () {
+                var $parent_id = $(this).attr('parent_id');
+                var $parent = $('#'+$parent_id);
+                var access = $("input[parent_id="+$parent_id+"]");
+                if(access.attr('checked')==true){
+                    $parent.prop('checked',true);
+                }else{
+                    $parent.prop('checked',false);
+                }
+                if($("input[name='access[]']").attr('checked')==true){
+                    $('#select_all').prop('checked',true);
+                }else{
+                    $('#select_all').prop('checked',false);
+                }
+            });
+
+
+        $(document).on('click','#select_all',function(){
+           var access = $("input[type='checkbox']");
+            if($(this).is(":checked")){
+                access.prop('checked',true);
+            }else{
+                access.prop('checked',false);
+            }
+        });
+    </script>
+    <script>
+        $("#system_management").prop('class','open');
+        $("#staff_info").prop('class','active');
+    </script>
+{% endblock %}

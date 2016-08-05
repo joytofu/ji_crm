@@ -1,0 +1,47 @@
+<?php
+
+namespace CRMBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CustomerService
+ *
+ * @ORM\Table(name="customer_service")
+ * @ORM\Entity
+ */
+class CustomerService
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="MID", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $mid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ManagerName", type="string", length=50, nullable=false)
+     */
+    private $managername;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Status", type="string", nullable=false)
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="AutoDistributionable", type="string", nullable=false)
+     */
+    private $autodistributionable = 'No';
+
+
+}
+

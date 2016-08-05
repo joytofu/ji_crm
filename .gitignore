@@ -15,9 +15,6 @@
 !var/logs/.gitkeep
 !var/sessions/.gitkeep
 
-# Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
 
 # Managed by Composer
 /app/bootstrap.php.cache
@@ -26,6 +23,7 @@
 !bin/console
 !bin/symfony_requirements
 /vendor/
+!/vendor/friendsofsymfony/
 
 # Assets and user uploads
 /web/bundles/

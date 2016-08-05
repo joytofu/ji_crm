@@ -1,0 +1,11 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}{% if edit is not defined %}添加知识{% else %}编辑知识{% endif %}<span class="pull-right" style="font-size: 16px"><a href="{{ path('knowledge_base_list') }}"><i class="fa fa-angle-double-left"></i>返回知识库列表</a></span>{% endblock %}
+{% block content %}
+    {{ form(form) }}
+{% endblock %}
+{% block private_js %}
+    <script>
+        $('#assistance').addClass('open');
+        $('#knowledge_base').addClass('active');
+    </script>
+{% endblock %}

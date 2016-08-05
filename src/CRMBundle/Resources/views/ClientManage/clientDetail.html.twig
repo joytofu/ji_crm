@@ -1,0 +1,257 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}客户详情<span class="pull-right" style="font-size: 14px"><a href="{{ path('my_clients') }}"><i class="fa fa-backward"></i>返回客户列表</a></span>{% endblock %}
+{% block content %}
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="row" style="background-color: transparent">
+                <div class="col-xs-12 col-sm-5">
+                    <div class="profile-user-info profile-user-info-striped">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 用户名 </div>
+
+                            <div class="profile-info-value">
+                                <span>{{ info.name }}</span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 姓名 </div>
+
+                            <div class="profile-info-value">
+                                <span>{{ info.realname }}</span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 身份证号码 </div>
+
+                            <div class="profile-info-value">
+                                <span>{{ info.ID }}</span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 年龄 </div>
+
+                            <div class="profile-info-value">
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 手机号码 </div>
+
+                            <div class="profile-info-value">
+                                <span>{{ info.phone }}</span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 邮箱 </div>
+
+                            <div class="profile-info-value">
+                                <span>{{ info.email }}</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-5">
+                    <div class="profile-user-info profile-user-info-striped">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 可用余额(元) </div>
+
+                            <div class="profile-info-value">
+                                <span class="editable editable-click" id="age">{{ info.availableMoney }}</span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 在途金额(元) </div>
+
+                            <div class="profile-info-value">
+                                <span class="editable editable-click" id="age">{{ info.transitMoney }}</span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 总资产(元) </div>
+
+                            <div class="profile-info-value">
+                                <span class="editable editable-click" id="age">{{ info.total_asset }}</span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 注册时间 </div>
+
+                            <div class="profile-info-value">
+                                <span>{{ info.registration }}</span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> 上次登录 </div>
+
+                            <div class="profile-info-value">
+                                <span>{{ info.login }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hr hr-double hr-dotted hr18"></div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active">
+                            <a data-toggle="tab" href="#transactionRecord" aria-expanded="true">
+                                <i class="green ace-icon fa fa-home bigger-120"></i>
+                                交易流水
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#investmentRecord" aria-expanded="false">
+                                投标记录
+                                <span class="badge badge-danger">4</span>
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#topUpRecord" aria-expanded="true">
+                                <i class="green ace-icon fa fa-home bigger-120"></i>
+                                充值记录
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#withdrawRecord" aria-expanded="true">
+                                <i class="green ace-icon fa fa-home bigger-120"></i>
+                                提现记录
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#paybackRecord" aria-expanded="true">
+                                <i class="green ace-icon fa fa-home bigger-120"></i>
+                                回款记录
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#loginRecord" aria-expanded="true">
+                                <i class="green ace-icon fa fa-home bigger-120"></i>
+                                登录记录
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#trackingRecord" aria-expanded="true">
+                                <i class="green ace-icon fa fa-home bigger-120"></i>
+                                回访记录
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#investmentAnalysis" aria-expanded="true">
+                                <i class="green ace-icon fa fa-home bigger-120"></i>
+                                客户投资分析
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <!--transactionRecord-->
+                        {{ render(controller('CRMBundle:ClientAsset:record',{'uid':uid,'type':'all','bid':'transactionRecord'})) }}
+
+                        <!--investmentRecord-->
+                        {{ render(controller('CRMBundle:ClientAsset:record',{'uid':uid,'type':'tp','bid':'investmentRecord'})) }}
+
+                        <!--topUpRecord-->
+                        {{ render(controller('CRMBundle:ClientAsset:record',{'uid':uid,'type':'rc','bid':'topUpRecord'})) }}
+
+                        <!--withdrawRecord-->
+                        {{ render(controller('CRMBundle:ClientAsset:record',{'uid':uid,'type':'gc','bid':'withdrawRecord'})) }}
+
+                        <!--paybackRecord-->
+                        {{ render(controller('CRMBundle:ClientAsset:record',{'uid':uid,'type':'rp','bid':'paybackRecord'})) }}
+
+                        <!--loginRecord-->
+                        {{ render(controller('CRMBundle:ClientAsset:record',{'uid':uid,'type':'lg','bid':'loginRecord'})) }}
+
+                        {{ render(controller('CRMBundle:ClientManager:trackingRecordsOfSingleClient',{'uid':uid})) }}
+
+                        {{ render(controller('CRMBundle:ClientManager:investmentAnalysis',{'uid':uid})) }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block private_css %}
+    <link rel="stylesheet" href="{{ asset('assets/css/editor.dataTables.min.css') }}">
+
+{% endblock %}
+{% block private_js %}
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
+    {% if app.user.hasRole('MODIFY_TRACKING_RECORD') %}
+    <script>
+        $(document).on('click','#edit_record',function(){
+            var rid = $(this).attr('rid');
+            var contactMethod = $("td[name='showContactMethod'][rid="+rid+"]").text();
+            var type = $("td[name='showType'][rid="+rid+"]").text();
+            var content = $("td[name='showContent'][rid="+rid+"]").text();
+            if(contactMethod!=null){
+                $("#editContactMethod").val(contactMethod);
+            }
+            if(type!=null){
+                $('#editType').val(type);
+            }
+            $("#editContent").val(content);
+            $("input[name='editRecordId']").val(rid);
+
+        });
+        $(document).on('click','#editSubmit',function(){
+            var rid = $("input[name='editRecordId']").val();
+           $.ajax({
+               url:"{{ path('edit_tracking_record') }}",
+               async:true,
+               data:$('#editForm').serialize(),
+               type:"post",
+               dataType:"json",
+               success:function(res){
+                   $("td[name='showContactMethod'][rid="+rid+"]").empty();
+                   $("td[name='showContactMethod'][rid="+rid+"]").append(res.contactMethod);
+                   $("td[name='showType'][rid="+rid+"]").empty();
+                   $("td[name='showType'][rid="+rid+"]").append(res.recordType);
+                   $("td[name='showContent'][rid="+rid+"]").empty();
+                   $("td[name='showContent'][rid="+rid+"]").text(res.recordContent);
+                   $('#edit_trackingRecord').modal('hide');
+
+               }
+           });
+        });
+        {% if app.user.hasRole('DELETE_TRACKING_RECORD')%}
+        $(document).on('click','#deleteTrackingRecord',function(){
+            var rid = $(this).attr('rid');
+            var tr = $(this).parent().parent();
+            if(confirm('确定删除该回访记录吗?')){
+                $.ajax({
+                    url:"/delete_tracking_record/"+rid,
+                    type:"post",
+                    success:function(){
+                        tr.remove();
+                    }
+                });
+            }
+        });
+        {% endif %}
+    </script>
+    {% endif %}
+    <script>
+        $("#client_management").prop('class','open');
+        $("#my_clients").prop('class','active');
+    </script>
+{% endblock %}

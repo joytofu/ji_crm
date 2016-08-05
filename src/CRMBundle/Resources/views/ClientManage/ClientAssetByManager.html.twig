@@ -1,0 +1,28 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}{{ page_header }}{% endblock %}
+{% block content %}
+    <table id="" class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+                <th>资金流水号</th>
+                <th>类型</th>
+                <th>存入(元)</th>
+                <th>支出(元)</th>
+                <th>余额</th>
+                <th>时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in record %}
+            <tr>
+                    <td>{{ item.serialNumber }}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.deposit }}</td>
+                    <td>{{ item.expense }}</td>
+                    <td>{{ item.balance }}</td>
+                    <td>{{ item.createdAt }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

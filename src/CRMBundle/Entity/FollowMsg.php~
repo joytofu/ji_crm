@@ -1,0 +1,54 @@
+<?php
+
+namespace CRMBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * FollowMsg
+ *
+ * @ORM\Table(name="follow_msg", indexes={@ORM\Index(name="UID", columns={"UID", "MID", "Time"})})
+ * @ORM\Entity
+ */
+class FollowMsg
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="FID", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $fid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="UID", type="integer", nullable=false)
+     */
+    private $uid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="MID", type="integer", nullable=false)
+     */
+    private $mid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Content", type="text", length=65535, nullable=false)
+     */
+    private $content;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Time", type="integer", nullable=false)
+     */
+    private $time;
+
+
+}
+

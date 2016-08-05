@@ -1,0 +1,54 @@
+<?php
+
+namespace CRMBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CustomerRemark
+ *
+ * @ORM\Table(name="customer_remark", indexes={@ORM\Index(name="UID", columns={"UID"})})
+ * @ORM\Entity
+ */
+class CustomerRemark
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="CustomerRemarkID", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $customerremarkid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="MID", type="integer", nullable=false)
+     */
+    private $mid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="UID", type="integer", nullable=false)
+     */
+    private $uid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Content", type="text", length=65535, nullable=false)
+     */
+    private $content;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Time", type="integer", nullable=false)
+     */
+    private $time;
+
+
+}
+

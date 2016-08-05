@@ -1,0 +1,50 @@
+
+
+        <h5 style="display: inline;vertical-align: super">共{{ pagination.page_count }}页</h5>
+        {% if (pagination.page_count) > 1 %}
+            <ul class="pagination">
+                {% if app.request.get('page') is not null and app.request.get('page')!=1 %}
+                    <li class="first">
+                        <a href="{{ first_page }}">首页</a>
+                    </li>
+                {% endif %}
+
+                {% if app.request.get('page') is not null and app.request.get('page')!=1 %}
+                    <li class="paginate_button previous">
+                        <a href="{{ previous }}">&lt;</a>
+                    </li>
+                {% endif %}
+
+                {% for page in (pagination.page_start)..(pagination.page_end) %}
+                    {% if app.request.get('page') is null and page==1 %}
+                        <li class="active">
+                            <a href="javascript:void(0)">{{ page }}</a>
+                        </li>
+                    {% elseif page == app.request.get('page')  %}
+                        <li class="active">
+                            <a href="javascript:void(0)">{{ page }}</a>
+                        </li>
+                    {% elseif page != app.request.get('page') %}
+                        <li class="page">
+                            <a href="{{ current_page }}?page={{ page }}">{{ page }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if app.request.get('page')<(pagination.page_count) %}
+                    <li class="paginate_button next">
+                        {% if app.request.get('page') is null or app.request.get('page')==1  %}
+                            <a href="{#{{ path('distributed_users',{'sort':sort,'id':id,'page':2}) }}#}{{ page_2 }}">&gt;</a>
+                        {% else %}
+                            <a href="{#{{ path('distributed_users',{'sort':sort,'id':id,'page':app.request.get('page')+1}) }}#}{{ next }}">&gt;</a>
+                        {% endif %}
+                    </li>
+                    <li class="last">
+                        <a href="{#{{ path('distributed_users',{'sort':sort,'id':id,'page':(pagination.page_count)}) }}#}{{ last_page }}">尾页</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+
+
+

@@ -1,0 +1,208 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}
+    <h1>
+        员工信息
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            员工列表
+        </small>
+    </h1>
+{% endblock %}
+{% block content %}
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                <li class="active">
+                    <a data-toggle="tab" href="#executive" aria-expanded="true">高管</a>
+                </li>
+
+                <li class="">
+                    <a data-toggle="tab" href="#manager" aria-expanded="false">部门经理</a>
+                </li>
+
+                <li class="">
+                    <a data-toggle="tab" href="#salesman" aria-expanded="false">业务员</a>
+                </li>
+                {% if app.user.hasRole('ROLE_SUPER_ADMIN') %}
+                <li class="">
+                    <a data-toggle="tab" href="#admin" aria-expanded="false">系统管理员</a>
+                </li>
+                    {% endif %}
+            </ul>
+
+            <div class="tab-content">
+                <div id="executive" class="tab-pane active">
+                    <table id="executives-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>员工姓名</th>
+                                <th>岗位</th>
+                                <th>联系电话</th>
+                                <th>入职时间</th>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <th></th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for userInfo in executives %}
+                            <tr>
+                                <td>{{ userInfo.name }}</td>
+                                <td>{{ userInfo.position }}</td>
+                                <td>{{ userInfo.cellphone }}</td>
+                                <td>{{ userInfo.hireDate|date('Y-m-d') }}</td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <td><a href="{{ path('edit_user', {'id': userInfo.user.id}) }}"><i class="fa fa-wrench" style="margin-right: 11px"></i></a>
+                                    <a href="javascript:void(0)" onclick="deleteUser({{ userInfo.id }})"><i class="fa fa-trash-o" style="margin-right: 11px"></i></a>
+                                    <a href="javascript:void(0)" onclick="resetPassword({{ userInfo.user.id }})"><i class="fa fa-rotate-left"></i></a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="manager" class="tab-pane">
+                    <table id="managers-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>员工姓名</th>
+                            <th>所在部门</th>
+                            <th>岗位</th>
+                            <th>联系电话</th>
+                            <th>入职时间</th>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <th></th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for userInfo in managers %}
+                            <tr>
+                                <td>{{ userInfo.name }}</td>
+                                <td>{{ userInfo.department }}</td>
+                                <td>{{ userInfo.position }}</td>
+                                <td>{{ userInfo.cellphone }}</td>
+                                <td>{{ userInfo.hireDate|date('Y-m-d') }}</td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <td>
+                                        <a href="{{ path('edit_user', {'id': userInfo.user.id}) }}"><i class="fa fa-wrench" style="margin-right: 11px"></i></a>
+                                    <a href="javascript:void(0)" onclick="deleteUser({{ userInfo.id }})"><i class="fa fa-trash-o" style="margin-right: 11px"></i></a>
+                                        <a href="javascript:void(0)" onclick="resetPassword({{ userInfo.user.id }})"><i class="fa fa-rotate-left"></i></a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="salesman" class="tab-pane">
+                    <table id="salesmen-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>员工姓名</th>
+                            <th>所在部门</th>
+                            <th>岗位</th>
+                            <th>联系电话</th>
+                            <th>入职时间</th>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <th></th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for userInfo in salesmen %}
+                            <tr>
+                                <td>{{ userInfo.name }}</td>
+                                <td>{{ userInfo.department }}</td>
+                                <td>{{ userInfo.position }}</td>
+                                <td>{{ userInfo.cellphone }}</td>
+                                <td>{{ userInfo.hireDate|date('Y-m-d') }}</td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <td><a href="{{ path('edit_user', {'id': userInfo.user.id}) }}"><i class="fa fa-wrench" style="margin-right: 11px"></i></a>
+                                    <a href="javascript:void(0)" onclick="deleteUser({{ userInfo.id }})"><i class="fa fa-trash-o" style="margin-right: 11px"></i></a>
+                                        <a href="javascript:void(0)" onclick="resetPassword({{ userInfo.user.id }})"><i class="fa fa-rotate-left"></i></a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if app.user.hasRole('ROLE_SUPER_ADMIN') %}
+                <div id="admin" class="tab-pane">
+                    <table id="admins-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>员工姓名</th>
+                            <th>所在部门</th>
+                            <th>岗位</th>
+                            <th>联系电话</th>
+                            <th>入职时间</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for userInfo in admins %}
+                            <tr>
+                                <td>{{ userInfo.name }}</td>
+                                <td>{{ userInfo.department }}</td>
+                                <td>{{ userInfo.position }}</td>
+                                <td>{{ userInfo.cellphone }}</td>
+                                <td>{{ userInfo.hireDate|date('Y-m-d') }}</td>
+                                <td><a href="{{ path('edit_user', {'id': userInfo.user.id}) }}"><i class="fa fa-wrench" style="margin-right: 11px"></i></a>
+                                    <a href="javascript:void(0)" onclick="deleteUser({{ userInfo.id }})"><i class="fa fa-trash-o" style="margin-right: 11px"></i></a>
+                                    <a href="javascript:void(0)" onclick="resetPassword({{ userInfo.user.id }})"><i class="fa fa-rotate-left"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('create_user') }}"><button class="btn btn-info">添加员工</button></a>
+        {% endif %}
+    </div>
+
+{% endblock %}
+{% block private_js %}
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $('#executives-table').dataTable();
+        $('#managers-table').dataTable();
+        $('#salesmen-table').dataTable();
+        $('#admins-table').dataTable();
+    </script>
+    <script>
+        function deleteUser(id) {
+            if(confirm('确定删除该用户吗?')){
+                window.location.href="/delete_user/"+id;
+            }
+        }
+
+        function resetPassword(id){
+
+                $.ajax({
+                    url:"{{ app.request.baseUrl }}/reset_password/"+id,
+                    success:function (res) {
+                        if(res=='success'){
+                            alert('重置密码成功!');
+                        }
+                    }
+                })
+
+        }
+    </script>
+    <script>
+        $("#system_management").prop('class','open');
+        $("#staff_info").prop('class','active');
+    </script>
+
+{% endblock %}

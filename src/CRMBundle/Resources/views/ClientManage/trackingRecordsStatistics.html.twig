@@ -1,0 +1,34 @@
+{% extends ':default:layout.html.twig' %}
+{% block page_header %}客户服务统计{% endblock %}
+{% block content %}
+    <table id="tracking_records" class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>类型</th>
+            <th>当天</th>
+            <th>7天</th>
+            <th>当月</th>
+            <th>上月</th>
+            <th>累计</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.contactMethod }}</td>
+            <td>{{ item.intraday }}</td>
+            <td>{{ item.sevenDays }}</td>
+            <td>{{ item.currentMonth }}</td>
+            <td>{{ item.lastMonth }}</td>
+            <td>{{ item.last3Months }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block private_js %}
+    <script>
+        $('#data').addClass('open');
+        $('#tracking_record_statistics').addClass('active');
+    </script>
+{% endblock %}

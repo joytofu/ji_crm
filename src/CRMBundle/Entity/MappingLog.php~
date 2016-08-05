@@ -1,0 +1,47 @@
+<?php
+
+namespace CRMBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * MappingLog
+ *
+ * @ORM\Table(name="mapping_log")
+ * @ORM\Entity
+ */
+class MappingLog
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="MappingLogID", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $mappinglogid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="UID", type="integer", nullable=false)
+     */
+    private $uid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="MID", type="integer", nullable=false)
+     */
+    private $mid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Time", type="integer", nullable=false)
+     */
+    private $time;
+
+
+}
+

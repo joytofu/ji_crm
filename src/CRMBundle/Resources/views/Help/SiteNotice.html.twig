@@ -1,0 +1,23 @@
+{% extends ':default:layout.html.twig' %}
+{% block private_css %}
+    <link rel="stylesheet" href="{{ asset('assets/umeditor/themes/default/css/umeditor.min.css') }}">
+{% endblock %}
+{% block page_header %}{% if edit is not defined %}添加公告{% else %}编辑公告{% endif %}{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.content,{'attr':{'style':'height:200px'}}) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block private_js %}
+    <script src="{{ asset('assets/umeditor/umeditor.config.js') }}"></script>
+    <script src="{{ asset('assets/umeditor/umeditor.min.js') }}"></script>
+    <script src="{{ asset('assets/umeditor/lang/zh-cn/zh-cn.js') }}"></script>
+    <script>
+        $(function(){
+            window.um = UM.getEditor('site_notice_content');
+        });
+        $('#assistance').addClass('open');
+        $('#site_notice').addClass('active');
+    </script>
+{% endblock %}

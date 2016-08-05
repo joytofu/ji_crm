@@ -1,0 +1,30 @@
+{% extends ':default:layout.html.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                        <a data-toggle="tab" href="#top_up" aria-expanded="true">
+                            <i class="blue ace-icon fa fa-money bigger-120"></i>
+                            充值列表
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a data-toggle="tab" href="#withdraw" aria-expanded="false">
+                            <i class="blue ace-icon fa fa-money bigger-120"></i>
+                            提现列表
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    {{ render(controller('CRMBundle:ClientAsset:fundFlow',{'type':'rc','bid':'top_up'})) }}
+
+                    {{ render(controller('CRMBundle:ClientAsset:fundFlow',{'type':'gc','bid':'withdraw'})) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<?php
+
+namespace CRMBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CustomerExtraInfo
+ *
+ * @ORM\Table(name="customer_extra_info")
+ * @ORM\Entity
+ */
+class CustomerExtraInfo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="UID", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $uid;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Category", type="integer", nullable=false)
+     */
+    private $category;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="recommend", type="integer", nullable=true)
+     */
+    private $recommend;
+
+
+}
+
